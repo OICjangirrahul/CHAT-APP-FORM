@@ -43,30 +43,30 @@ class _CreateUserState extends State<CreateUser> {
     });
   }
 
-  List<String> _dropDownMenuYear = [
-    '1994',
-    '1995',
-    '1996',
-    '1997',
-    '1998',
-    '1999',
-    '2000',
-    '000000'
-  ];
-  List<String> _dropDownMenuMonth = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12'
-  ];
+  // List<String> _dropDownMenuYear = [
+  //   '1994',
+  //   '1995',
+  //   '1996',
+  //   '1997',
+  //   '1998',
+  //   '1999',
+  //   '2000',
+  //   '000000'
+  // ];
+  // List<String> _dropDownMenuMonth = [
+  //   '1',
+  //   '2',
+  //   '3',
+  //   '4',
+  //   '5',
+  //   '6',
+  //   '7',
+  //   '8',
+  //   '9',
+  //   '10',
+  //   '11',
+  //   '12'
+  // ];
   checkval() {
     final isval = _formkey.currentState!.validate();
 
