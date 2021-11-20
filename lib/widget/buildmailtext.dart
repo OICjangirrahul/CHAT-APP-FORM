@@ -8,13 +8,13 @@ class BuildMailText extends StatefulWidget {
 }
 
 class _BuildMailTextState extends State<BuildMailText> {
-   String email = '';
+  String email = '';
   @override
   Widget build(BuildContext context) {
-       Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width * 0.90,
-      height: size.height * 0.08,
+      height: size.height * 0.07,
       child: TextFormField(
         decoration: InputDecoration(
             errorBorder: OutlineInputBorder(),
@@ -28,6 +28,7 @@ class _BuildMailTextState extends State<BuildMailText> {
             return "メールアドレス正しく挿入して下さい";
           }
         },
+       
       ),
     );
   }

@@ -14,25 +14,31 @@ class _BuildAboutTextState extends State<BuildAboutText> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      width: size.width * 0.90,
-      child: TextFormField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
+    return Column(
+      children: [
+        
+        
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 5),
+          width: size.width * 0.90,
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            minLines: 2,
+            maxLines: 4,
+            keyboardType: TextInputType.multiline,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "自己紹介を挿入ください";
+              }
+            },
+            onChanged: (value) => setState(() {
+              about = value;
+            }),
+          ),
         ),
-        minLines: 4,
-        maxLines: 5,
-        keyboardType: TextInputType.multiline,
-        validator: (value) {
-          if (value!.isEmpty) {
-            return "自己紹介を挿入ください";
-          }
-        },
-        onChanged: (value) => setState(() {
-          about = value;
-        }),
-      ),
+      ],
     );
   }
 }

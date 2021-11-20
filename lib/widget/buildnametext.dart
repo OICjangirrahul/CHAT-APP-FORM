@@ -20,7 +20,7 @@ class _BuilNameTextState extends State<BuildNameText> {
     Size size = MediaQuery.of(context).size;
     return Container(
       width: size.width * 0.90,
-      height: size.height * 0.08,
+      height: size.height * 0.07,
       child: TextFormField(
           controller: usernamec,
           decoration:
