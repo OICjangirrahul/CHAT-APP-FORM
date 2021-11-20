@@ -76,14 +76,14 @@ class _CreateUserState extends State<CreateUser> {
       return null;
   }
 
-  gettan(String? newValue) {
-    setState(() {
-      _selectedKeyMonth = newValue;
-    });
-  }
+  // gettan(String? newValue) {
+  //   setState(() {
+  //     _selectedKeyMonth = newValue;
+  //   });
+  // }
 
-  String? _selectedKeyYear;
-  String? _selectedKeyMonth;
+  // // String? _selectedKeyYear;
+  // // String? _selectedKeyMonth;
 
   bool Value = true;
   late DateTime date;
