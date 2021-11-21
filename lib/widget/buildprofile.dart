@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class buildProfile extends StatefulWidget {
@@ -11,18 +12,26 @@ class buildProfile extends StatefulWidget {
 }
 
 class _buildProfileState extends State<buildProfile> {
-  XFile? file;
-  ImagePicker? _picker = ImagePicker();
-  List<XFile>? files;
+  File? imageFile;
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    _cropImage(pickedFile!.path);
+  }
 
-  pic() async {
-    final XFile? photo = await _picker!.pickImage(source: ImageSource.gallery);
-    
-    setState(() {
-      file = photo;
-    });
-    print("image picked");
-    
+  _cropImage(filePath) async {
+    File? croppedImage = await ImageCropper.cropImage(
+      sourcePath: filePath,
+      maxWidth: 1080,
+      maxHeight: 1080,
+    );
+    if (croppedImage != null) {
+      imageFile = croppedImage;
+      setState(() {});
+    }
   }
 
   @override
@@ -37,11 +46,14 @@ class _buildProfileState extends State<buildProfile> {
             width: 100,
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              child: file == null
-                  ? Text('写真',style: TextStyle(color: Colors.black),)
+              child: imageFile == null
+                  ? Text(
+                      '写真',
+                      style: TextStyle(color: Colors.black),
+                    )
                   : ClipOval(
                       child: Image.file(
-                        File(file!.path),
+                        File(imageFile!.path),
                         height: 100,
                         width: 100,
                         fit: BoxFit.cover,
@@ -58,8 +70,9 @@ class _buildProfileState extends State<buildProfile> {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: Colors.white),
                   onPressed: () async {
-                    await pic();
-                    print(file!.path);
+                    await _getFromGallery();
+
+                    print(imageFile!.path);
                   },
                   child: Text(
                     '画像を選択',
@@ -67,7 +80,6 @@ class _buildProfileState extends State<buildProfile> {
                   )),
             ),
           ),
-        
         ],
       ),
     );
