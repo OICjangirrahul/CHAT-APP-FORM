@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:formval/Auth/login.dart';
+import 'package:formval/providers/createpro.dart';
 import 'package:formval/widget/drop.dart';
+import 'package:provider/provider.dart';
 
 import 'Auth/createuser.dart';
 
@@ -21,7 +23,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       
-      home: CreateUser(),
+      home: ChangeNotifierProvider(create: (context)=>CreateUserPro(),
+      
+      child:  CreateUser(),
+      )
       
     );
   }

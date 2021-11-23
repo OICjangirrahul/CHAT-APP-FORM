@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:formval/Auth/createuser.dart';
 
 class BuildButton extends StatefulWidget {
+  bool flag = true;
   Function fn;
   String? name;
-  bool flag = false;
-  BuildButton(this.fn,this.name,this.flag);
+
+  BuildButton(
+    this.flag,
+    this.fn,
+    this.name,
+  );
 
   @override
   _BuildButtonState createState() => _BuildButtonState();
@@ -13,7 +18,6 @@ class BuildButton extends StatefulWidget {
 
 class _BuildButtonState extends State<BuildButton> {
   
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -27,7 +31,7 @@ class _BuildButtonState extends State<BuildButton> {
                 textStyle:
                     TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
             onPressed: () {
-              
+            
               widget.fn(widget.name);
             },
             child: Text(

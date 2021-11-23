@@ -5,14 +5,16 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class buildProfile extends StatefulWidget {
-  buildProfile({Key? key}) : super(key: key);
+  File? imageFile;
+  Function fn;
+
+  buildProfile(this.imageFile, this.fn);
 
   @override
   _buildProfileState createState() => _buildProfileState();
 }
 
 class _buildProfileState extends State<buildProfile> {
-  File? imageFile;
   _getFromGallery() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -29,7 +31,9 @@ class _buildProfileState extends State<buildProfile> {
       maxHeight: 1080,
     );
     if (croppedImage != null) {
-      imageFile = croppedImage;
+      widget.imageFile = croppedImage;
+      widget.fn(croppedImage);
+      print('sass${widget.imageFile}');
       setState(() {});
     }
   }
@@ -46,14 +50,14 @@ class _buildProfileState extends State<buildProfile> {
             width: 100,
             child: CircleAvatar(
               backgroundColor: Colors.white,
-              child: imageFile == null
+              child: widget.imageFile == null
                   ? Text(
                       '写真',
                       style: TextStyle(color: Colors.black),
                     )
                   : ClipOval(
                       child: Image.file(
-                        File(imageFile!.path),
+                        File(widget.imageFile!.path),
                         height: 100,
                         width: 100,
                         fit: BoxFit.cover,
@@ -72,7 +76,7 @@ class _buildProfileState extends State<buildProfile> {
                   onPressed: () async {
                     await _getFromGallery();
 
-                    print(imageFile!.path);
+                    print(widget.imageFile!.path);
                   },
                   child: Text(
                     '画像を選択',

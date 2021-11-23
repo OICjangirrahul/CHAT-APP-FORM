@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:formval/models/user.dart';
 import 'package:formval/screen/home.dart';
 import 'package:formval/widget/Buildpasswordtext.dart';
 import 'package:formval/widget/buildmailtext.dart';
@@ -10,6 +13,7 @@ import 'package:formval/widget/builldabouttext.dart';
 import 'package:formval/widget/datepicker.dart';
 import 'package:formval/widget/drop.dart';
 import 'package:formval/widget/mainbutton.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class CreateUser extends StatefulWidget {
@@ -36,12 +40,21 @@ class _CreateUserState extends State<CreateUser> {
     });
   }
 
+  getimagepath(value) {
+    imageFile = value;
+  }
+
   getsexValue(String name) {
     setState(() {
-      flag = !flag;
       sexvalue = name;
+      print(sexvalue);
+      print(imageFile);
+      print('asdsdaasd${dateval}');
     });
   }
+
+  File? imageFile;
+  Person? person = Person.getInstance();
 
   // List<String> _dropDownMenuYear = [
   //   '1994',
@@ -70,7 +83,28 @@ class _CreateUserState extends State<CreateUser> {
   checkval() {
     final isval = _formkey.currentState!.validate();
 
-    if (isval) {
+    if (sexvalue == '') {
+      print(dateval);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            '性別挿入ください',
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      );
+    } else if (imageFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.orangeAccent,
+          content: Text(
+            'shashin日挿入ください',
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+      );
+    } else if (isval) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } else
       return null;
@@ -85,15 +119,20 @@ class _CreateUserState extends State<CreateUser> {
   // // String? _selectedKeyYear;
   // // String? _selectedKeyMonth;
 
+  DateTime? dateval;
+  final datefor = DateFormat('dd');
+  final datefor1 = DateFormat('MM');
+  final datefor2 = DateFormat('yyyy');
+  
   bool Value = true;
-  late DateTime date;
-  final datefor = DateFormat('MM');
-  final datefor1 = DateFormat('dd');
-  final datefor2 = DateFormat('yyy');
-  DateTime datee = DateTime.now();
+  gettime(value) {
+    dateval = value;
+    print('asdsdaasd${dateval}');
+  }
 
   @override
   Widget build(BuildContext context) {
+    print('i am in create user');
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -134,17 +173,15 @@ class _CreateUserState extends State<CreateUser> {
                             Row(
                               children: [
                                 BuildButton(
-                                    getsexValue,
-                                    '男性',
-                                    sexvalue == '男性'
-                                        ? flag = true
-                                        : flag = false),
+                                  sexvalue == '男性' ? flag = true : flag = false,
+                                  getsexValue,
+                                  '男性',
+                                ),
                                 BuildButton(
-                                    getsexValue,
-                                    '女性',
-                                    sexvalue == '女性'
-                                        ? flag = true
-                                        : flag = false)
+                                  sexvalue == '女性' ? flag = true : flag = false,
+                                  getsexValue,
+                                  '女性',
+                                )
                               ],
                             ),
                           ],
@@ -166,7 +203,8 @@ class _CreateUserState extends State<CreateUser> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Datepicker(datee, size, datefor2, datefor1, datefor),
+                      Datepicker(
+                         size, datefor2, datefor1, datefor, gettime),
                       // Container(
                       //   margin: EdgeInsets.only(top: 4),
                       //   width: size.width * 0.90,
@@ -209,7 +247,7 @@ class _CreateUserState extends State<CreateUser> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('プロファール画像「必須」'),
-                        buildProfile(),
+                        buildProfile(imageFile, getimagepath),
                         Text('「自己紹介必須」'),
                         BuildAboutText(),
                       ],
