@@ -32,19 +32,19 @@ class _DatepickerState extends State<Datepicker> {
             alignment: Alignment.center,
             height: widget.size.height / 25,
             width: widget.size.width / 5,
-            child: Text(date==null ? 'year'   :widget.datefor.format(date))),
+            child: Text(date==null ? '年齢'   :widget.datefor.format(date))),
         Container(
             decoration: BoxDecoration(border: Border.all(color: Colors.black)),
             alignment: Alignment.center,
             height: widget.size.height / 25,
             width: widget.size.width / 9,
-            child: Text(date==null ? 'month'   :widget.datefor1.format(date))),
+            child: Text(date==null ? '月'   :widget.datefor1.format(date))),
         Container(
             decoration: BoxDecoration(border: Border.all(color: Colors.black)),
             alignment: Alignment.center,
             height: widget.size.height / 25,
             width: widget.size.width / 9,
-            child: Text(date==null ? 'day'   :widget.datefor2.format(date))),
+            child: Text(date==null ? '日'   :widget.datefor2.format(date))),
         Container(
           height: widget.size.height * 0.04,
           decoration: BoxDecoration(border: Border.all()),
@@ -53,7 +53,7 @@ class _DatepickerState extends State<Datepicker> {
               primary: Colors.white,
             ),
             child: Text(
-              '誕生日',
+              '選択',
               style: TextStyle(color: Colors.black),
             ),
             onPressed: () {
@@ -72,26 +72,6 @@ class _DatepickerState extends State<Datepicker> {
         ),
       ],
     );
-    // Scaffold(
-    //   body: Column(
-    //     children: [
-    //       ElevatedButton(
-    //         child: Text('date'),
-    //         onPressed: () {
-    //           showDatePicker(
-    //                   context: context,
-    //                   initialDate: DateTime.now(),
-    //                   firstDate: DateTime(2000),
-    //                   lastDate: DateTime(2022))
-    //               .then((value) => setState(() {
-    //                     date = value as DateTime;
-    //                   }));
-    //         },
-    //       ),
-    //       Text(datefor.format(date)),
-    //        Text(datefor1.format(date))
-    //     ],
-    //   ),
-    // );
+   
   }
 }
