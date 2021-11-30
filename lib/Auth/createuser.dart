@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:formval/models/user.dart';
+import 'package:formval/Auth/methods.dart';
+
 import 'package:formval/screen/home.dart';
 import 'package:formval/widget/Buildpasswordtext.dart';
 import 'package:formval/widget/buildmailtext.dart';
@@ -15,6 +16,7 @@ import 'package:formval/widget/drop.dart';
 import 'package:formval/widget/mainbutton.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CreateUser extends StatefulWidget {
   CreateUser({Key? key}) : super(key: key);
@@ -25,18 +27,45 @@ class CreateUser extends StatefulWidget {
 
 class _CreateUserState extends State<CreateUser> {
   final _formkey = GlobalKey<FormState>();
-  String username = '';
-  String email = '';
-  String password = '';
-  String sexvalue = '';
+
+  String gender = '';
   bool flag = false;
 
-  final usernamec = TextEditingController();
-  final aboutc = TextEditingController();
-  String? about;
-  getname(String name) {
+  TextEditingController name = TextEditingController();
+  TextEditingController gmail = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  TextEditingController about = TextEditingController();
+
+  getname(value) {
     setState(() {
-      username = name;
+      name = value;
+  
+    });
+  }
+
+  getabout(value) {
+    about = value;
+
+  }
+
+  getmail(value) {
+    setState(() {
+      gmail = value;
+   
+    });
+  }
+
+  getpass(value) {
+    setState(() {
+      pass = value;
+     
+    });
+  }
+
+  getsgenderValue(String name) {
+    setState(() {
+      gender = name;
+      
     });
   }
 
@@ -44,17 +73,8 @@ class _CreateUserState extends State<CreateUser> {
     imageFile = value;
   }
 
-  getsexValue(String name) {
-    setState(() {
-      sexvalue = name;
-      print(sexvalue);
-      print(imageFile);
-      print('asdsdaasd${dateval}');
-    });
-  }
-
   File? imageFile;
-  Person? person = Person.getInstance();
+  bool isLoading = false;
 
   // List<String> _dropDownMenuYear = [
   //   '1994',
@@ -83,7 +103,7 @@ class _CreateUserState extends State<CreateUser> {
   checkval() {
     final isval = _formkey.currentState!.validate();
 
-    if (sexvalue == '') {
+    if (gender == '') {
       print(dateval);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -105,7 +125,23 @@ class _CreateUserState extends State<CreateUser> {
         ),
       );
     } else if (isval) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      createAccount(name.text, gmail.text, pass.text, gender,
+              dateval.toString(), imageFile.toString(), about.text)
+          .then((user) {
+        print("Account Created Sucessfull");
+        setState(() {
+                isLoading = false;
+              });
+        if (user != null) {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => Home()));
+          print("Account Created Sucessfull");
+        } else {
+          print('faild');
+          setState(() {
+                isLoading = false;
+              });
+        }
+      });
     } else
       return null;
   }
@@ -123,7 +159,7 @@ class _CreateUserState extends State<CreateUser> {
   final datefor = DateFormat('dd');
   final datefor1 = DateFormat('MM');
   final datefor2 = DateFormat('yyyy');
-  
+
   bool Value = true;
   gettime(value) {
     dateval = value;
@@ -136,9 +172,19 @@ class _CreateUserState extends State<CreateUser> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SafeArea(
+      body: 
+      SafeArea(
         child: SingleChildScrollView(
-          child: Form(
+          child:isLoading
+          ? Center(
+              child: Container(
+                height: size.height / 20,
+                width: size.height / 20,
+                child: CircularProgressIndicator(),
+              ),
+            ):
+        
+           Form(
             key: _formkey,
             child: Column(
               children: [
@@ -155,17 +201,17 @@ class _CreateUserState extends State<CreateUser> {
                               height: size.height / 80,
                             ),
                             Text('名前 [必須]'),
-                            BuildNameText(getname),
+                            BuildNameText(getname, name),
                             SizedBox(
                               height: size.height / 80,
                             ),
                             Text('メールアドレス[必須]'),
-                            BuildMailText(),
+                            BuildMailText(getmail, gmail),
                             SizedBox(
                               height: size.height / 80,
                             ),
                             Text("パスワード[必須]"),
-                            BuildPasswordText(),
+                            BuildPasswordText(getpass, pass),
                             SizedBox(
                               height: size.height / 80,
                             ),
@@ -173,13 +219,13 @@ class _CreateUserState extends State<CreateUser> {
                             Row(
                               children: [
                                 BuildButton(
-                                  sexvalue == '男性' ? flag = true : flag = false,
-                                  getsexValue,
+                                  gender == '男性' ? flag = true : flag = false,
+                                  getsgenderValue,
                                   '男性',
                                 ),
                                 BuildButton(
-                                  sexvalue == '女性' ? flag = true : flag = false,
-                                  getsexValue,
+                                  gender == '女性' ? flag = true : flag = false,
+                                  getsgenderValue,
                                   '女性',
                                 )
                               ],
@@ -203,8 +249,7 @@ class _CreateUserState extends State<CreateUser> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Datepicker(
-                         size, datefor2, datefor1, datefor, gettime),
+                      Datepicker(size, datefor2, datefor1, datefor, gettime),
                       // Container(
                       //   margin: EdgeInsets.only(top: 4),
                       //   width: size.width * 0.90,
@@ -249,12 +294,12 @@ class _CreateUserState extends State<CreateUser> {
                         Text('プロファール画像「必須」'),
                         buildProfile(imageFile, getimagepath),
                         Text('「自己紹介必須」'),
-                        BuildAboutText(),
+                        BuildAboutText(getabout, about),
                       ],
                     ),
                   ],
                 ),
-                MainButton(size, checkval, '登録する')
+                MainButton(size, checkval, '登録する'),
               ],
             ),
           ),

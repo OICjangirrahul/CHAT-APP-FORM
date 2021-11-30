@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class BuildMailText extends StatefulWidget {
-  BuildMailText({Key? key}) : super(key: key);
+  BuildMailText(this.fn, this.gmail);
+  Function fn;
+  TextEditingController gmail = TextEditingController();
 
   @override
   _BuildMailTextState createState() => _BuildMailTextState();
 }
 
 class _BuildMailTextState extends State<BuildMailText> {
-  String email = '';
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -21,6 +22,7 @@ class _BuildMailTextState extends State<BuildMailText> {
             border: OutlineInputBorder(),
             hintText: 'xxxx@xxxx.com'),
         keyboardType: TextInputType.name,
+        controller: widget.gmail,
         validator: (Value) {
           if (Value!.isEmpty) {
             return "メールアドレスを挿入して下さい";
@@ -28,7 +30,9 @@ class _BuildMailTextState extends State<BuildMailText> {
             return "メールアドレス正しく挿入して下さい";
           }
         },
-       
+        onChanged: (value) {
+          widget.fn(value);
+        },
       ),
     );
   }

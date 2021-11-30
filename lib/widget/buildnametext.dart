@@ -4,15 +4,15 @@ import 'package:formval/Auth/createuser.dart';
 import 'package:formval/widget/builldabouttext.dart';
 
 class BuildNameText extends StatefulWidget {
-  BuildNameText(this.fn);
+  BuildNameText(this.fn,this.name);
   Function fn;
+  TextEditingController name = TextEditingController();
 
   @override
   _BuilNameTextState createState() => _BuilNameTextState();
 }
 
 class _BuilNameTextState extends State<BuildNameText> {
-  TextEditingController usernamec = TextEditingController();
   
 
   @override
@@ -22,7 +22,7 @@ class _BuilNameTextState extends State<BuildNameText> {
       width: size.width * 0.90,
       height: size.height * 0.07,
       child: TextFormField(
-          controller: usernamec,
+          controller: widget.name,
           decoration:
               InputDecoration(border: OutlineInputBorder(), hintText: 'クリリン'),
           keyboardType: TextInputType.name,
@@ -32,8 +32,8 @@ class _BuilNameTextState extends State<BuildNameText> {
             }
             return null;
           },
-          onChanged: (Value) {
-            widget.fn(Value);
+          onChanged: (value) {
+            widget.fn(value);
           }),
     );
   }

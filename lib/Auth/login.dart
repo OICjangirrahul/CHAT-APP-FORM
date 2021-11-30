@@ -1,12 +1,16 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:formval/Auth/createuser.dart';
+import 'package:formval/Auth/forgotpass.dart';
 import 'package:formval/screen/home.dart';
 import 'package:formval/widget/Buildpasswordtext.dart';
 import 'package:formval/widget/buildbutton.dart';
 import 'package:formval/widget/buildmailtext.dart';
 import 'package:formval/widget/buildnametext.dart';
 import 'package:formval/widget/mainbutton.dart';
+
+import 'methods.dart';
 
 class LogIn extends StatefulWidget {
   LogIn({Key? key}) : super(key: key);
@@ -16,41 +20,81 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-   final _formkey = GlobalKey<FormState>();
-  checkval(){
-     final isval = _formkey.currentState!.validate();
+  final _formkey = GlobalKey<FormState>();
+  movetocreateUser() {
+    
 
-                      
-
-                      if (isval) {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Home()));
-                      } else
-                        return null;
+   
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateUser()));
+   
   }
 
+  getmail(value) {
+    setState(() {
+      gmail = value;
+    });
+  }
+
+  getpass(value) {
+    setState(() {
+      pass = value;
+    });
+  }
+  bool isLoading = false;
+
+  TextEditingController gmail = TextEditingController();
+  TextEditingController pass = TextEditingController();
   @override
   Widget build(BuildContext context) {
-        Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Form(
+    Size size = MediaQuery.of(context).size;
+    return 
+    Scaffold(
+      body: isLoading?   
+       Center(
+              child: Container(
+                height: size.height / 20,
+                width: size.height / 20,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : 
+      Form(
         key: _formkey,
         child: Center(
           child: Column(
-
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-               Column(
-                 children: [
-                   BuildMailText(),
-                   BuildPasswordText(),
-                 ],
-               ),
-               MainButton(size, checkval, "vb")
-               
+              Column(
+                children: [
+                  BuildMailText(getmail, gmail),
+                  SizedBox(height: 10,),
+                  BuildPasswordText(getpass, pass),
+                ],
+              ),
+                SizedBox(height: 10,),
+
+              MainButton(size, movetocreateUser, "新登録"),
+              ElevatedButton(
+                  onPressed: () {
+                    logIn(gmail.text, pass.text).then((user) {
+                      print('done');
+                      if(user!=null){
+                         print("Login Sucessfull");
+                           Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => Home()));
+                      }else{
+                        print("Login Failed");
+                      }
+                    });
+                  },
+                  child: Text('ログイン')),
+                  TextButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPassword()));
+                  }, child: Text('for'))
             ],
           ),
         ),
-      ),
+      )
     );
   }
 }

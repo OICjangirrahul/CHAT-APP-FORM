@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:formval/widget/buildprofile.dart';
 
 class BuildPasswordText extends StatefulWidget {
+  BuildPasswordText(this.fn, this.pass);
+  Function fn;
+  TextEditingController pass = TextEditingController();
   @override
   _BuildPasswordTextState createState() => _BuildPasswordTextState();
 }
@@ -18,6 +21,7 @@ class _BuildPasswordTextState extends State<BuildPasswordText> {
       child: TextFormField(
         obscureText: true,
         obscuringCharacter: '*',
+        controller: widget.pass,
         decoration:
             InputDecoration(border: OutlineInputBorder(), hintText: 'password'),
         keyboardType: TextInputType.name,
@@ -26,8 +30,8 @@ class _BuildPasswordTextState extends State<BuildPasswordText> {
             return "パスワードを挿入して下さい";
           }
         },
-        onChanged: (Value) {
-          null;
+        onChanged: (value) {
+          widget.fn(value);
         },
       ),
     );
