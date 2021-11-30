@@ -36,6 +36,8 @@ class _CreateUserState extends State<CreateUser> {
   TextEditingController pass = TextEditingController();
   TextEditingController about = TextEditingController();
 
+
+
   getname(value) {
     setState(() {
       name = value;
@@ -137,9 +139,7 @@ class _CreateUserState extends State<CreateUser> {
           print("Account Created Sucessfull");
         } else {
           print('faild');
-          setState(() {
-                isLoading = false;
-              });
+          
         }
       });
     } else

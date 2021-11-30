@@ -24,9 +24,9 @@ class _BuildMailTextState extends State<BuildMailText> {
         keyboardType: TextInputType.name,
         controller: widget.gmail,
         validator: (Value) {
-          if (Value!.isEmpty) {
+          if (Value=="") {
             return "メールアドレスを挿入して下さい";
-          } else if (!Value.contains('@')) {
+          } else if (Value!.contains('@')) {
             return "メールアドレス正しく挿入して下さい";
           }
         },

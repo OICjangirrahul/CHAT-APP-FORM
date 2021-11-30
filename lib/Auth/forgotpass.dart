@@ -1,10 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:formval/Auth/login.dart';
+import 'package:formval/widget/buildmailtext.dart';
 
 import 'methods.dart';
-
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key? key}) : super(key: key);
@@ -16,20 +15,13 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
 
-  var email = "";
-
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-  final emailController = TextEditingController();
-
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    emailController.dispose();
-    super.dispose();
+  TextEditingController gmail = TextEditingController();
+  var email = '';
+  getgmail(value) {
+    gmail = value;
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +34,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           Container(
             margin: EdgeInsets.only(top: 20.0),
             child: Text(
-              'Reset Link will be sent to your email id !',
+              'ご登録のメールアドレスを入力してくださいメールアドレス宛に、パスワード設定用のURLをお送りします。',
               style: TextStyle(fontSize: 20.0),
             ),
           ),
@@ -53,28 +45,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                 child: ListView(
                   children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10.0),
-                      child: TextFormField(
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          labelText: 'Email: ',
-                          labelStyle: TextStyle(fontSize: 20.0),
-                          border: OutlineInputBorder(),
-                          errorStyle:
-                              TextStyle(color: Colors.redAccent, fontSize: 15),
-                        ),
-                        controller: emailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter Email';
-                          } else if (!value.contains('@')) {
-                            return 'Please Enter Valid Email';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
+                    BuildMailText(getgmail, gmail),
                     Container(
                       margin: EdgeInsets.only(left: 60.0),
                       child: Row(
@@ -85,35 +56,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               // Validate returns true if the form is valid, otherwise false.
                               if (_formKey.currentState!.validate()) {
                                 setState(() {
-                                  email = emailController.text;
+                                  email = gmail.text;
                                 });
-                                resetPassword(context,email);
+                                resetPassword(context, email);
                               }
                             },
                             child: Text(
-                              'Send Email',
+                              '送信',
                               style: TextStyle(fontSize: 18.0),
                             ),
                           ),
                           TextButton(
                             onPressed: () => {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (context, a, b) => LogIn(),
-                                    transitionDuration: Duration(seconds: 0),
-                                  ),
-                                  (route) => false)
+                               Navigator.pop(context)
                             },
                             child: Text(
-                              'Login',
+                              'ログイン',
                               style: TextStyle(fontSize: 14.0),
                             ),
                           ),
                         ],
                       ),
                     ),
-                
                   ],
                 ),
               ),
