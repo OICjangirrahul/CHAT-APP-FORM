@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'chatroom.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -10,9 +13,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+final FirebaseAuth _auth = FirebaseAuth.instance;
 Map<String, dynamic>? userMap;
+
   bool isloading = false;
   final TextEditingController _search = TextEditingController();
+    String chatRoomId(String user1, String user2) {
+    if (user1[0].toLowerCase().codeUnits[0] >
+        user2.toLowerCase().codeUnits[0]) {
+      return "$user1$user2";
+    } else {
+      return "$user2$user1";
+    }
+  }
   void onSearch() async {
     setState(() {
       isloading = true;
@@ -74,12 +87,37 @@ Map<String, dynamic>? userMap;
                     },
                     child: Text('search'),
                   ),
-                  userMap!= null ? ListTile(
-                    title: Text(userMap?['name'],
-                    
-                    ),
-                    subtitle: Text(userMap?['email']),
-                  ):Container(),
+                  userMap!= null ? 
+                     ListTile(
+                        onTap: () {
+                          String roomId = chatRoomId(
+                              _auth.currentUser!.displayName!,
+                              userMap!['name'],
+                             
+                              );
+
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ChatRoom(
+                                chatRoomId: roomId,
+                                userMap: userMap!,
+                              ),
+                            ),
+                          );
+                        },
+                        leading: Icon(Icons.account_box, color: Colors.black),
+                        title: Text(
+                          userMap!['name'],
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        subtitle: Text(userMap!['email']),
+                        trailing: Icon(Icons.chat, color: Colors.black),
+                      )
+                  :Container(),
 
                 ],
               ),

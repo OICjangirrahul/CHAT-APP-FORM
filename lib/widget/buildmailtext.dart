@@ -26,7 +26,7 @@ class _BuildMailTextState extends State<BuildMailText> {
         validator: (Value) {
           if (Value=="") {
             return "メールアドレスを挿入して下さい";
-          } else if (Value!.contains('@')) {
+          } else if (!Value!.contains('@')) {
             return "メールアドレス正しく挿入して下さい";
           }
         },

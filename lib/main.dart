@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       
       home: ChangeNotifierProvider(create: (context)=>CreateUserPro(),
       
-      child:  Home()
+      child:  LogIn()
       
       )
       
