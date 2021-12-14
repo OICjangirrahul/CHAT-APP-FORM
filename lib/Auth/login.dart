@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
 import 'package:formval/Auth/createuser.dart';
@@ -73,34 +73,37 @@ class _LogInState extends State<LogIn> {
             : Form(
                 key: _formkey,
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          BuildMailText(getmail, gmail),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          BuildPasswordText(getpass, pass),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MainButton(size, movetocreateUser, "新登録"),
-                      
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => ForgotPassword()));
-                          },
-                          child: Text('パスワードを忘れた方',style: TextStyle(color: Colors.black),)),
-                          MainButton(size, checkval, 'ログイン')
-                     
-                    ],
+                  child: Expanded(
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            BuildMailText(getmail, gmail),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            BuildPasswordText(getpass, pass),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        MainButton(size, movetocreateUser, "新登録"),
+                        
+                        TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ForgotPassword()));
+                            },
+                            child: Text('パスワードを忘れた方',style: TextStyle(color: Colors.black),)),
+                            MainButton(size, checkval, 'ログイン')
+                       
+                      ],
+                    ),
                   ),
                 ),
               ));

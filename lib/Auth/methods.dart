@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:formval/Auth/login.dart';
 
+
+
 Future<User?> createAccount(String name, String email, String password,String gender,String dob,String img,String about) async {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -18,6 +20,8 @@ Future<User?> createAccount(String name, String email, String password,String ge
     userCrendetial.user!.updateDisplayName(name);
 
     await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
+      
+      
       "name": name,
       "email": email,
       "status": "Unavalible",

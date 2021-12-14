@@ -13,11 +13,11 @@ class _BuildMailTextState extends State<BuildMailText> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       width: size.width * 0.90,
       height: size.height * 0.07,
       child: TextFormField(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             errorBorder: OutlineInputBorder(),
             border: OutlineInputBorder(),
             hintText: 'xxxx@xxxx.com'),
